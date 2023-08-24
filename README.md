@@ -25,7 +25,7 @@
 我们的训练代码基于[FastChat](https://github.com/lm-sys/FastChat)开发.您可以使用以下命令用两张A100（80G）训练, 训练数据是我们已经处理好的[数据]
 ```bash
 export PYTHONPATH=./
-deepspeed --master_port=20001 toolbench/train/train_long_seq_lora.py \
+deepspeed --master_port=20001 train/sft/train_lora.py \
     --model_name_or_path huggyllama/llama-7b  \
     --data_path  data/instruction/dummy_data.jsonl \
     --conv_template llama-single-round \
@@ -56,7 +56,7 @@ deepspeed --master_port=20001 toolbench/train/train_long_seq_lora.py \
 * 网络数据：大多数开放语言模型（如Llama 1/2、Falcon、T5、MPT）都是基于预处理的网络文本的一个重要部分进行训练的。
 * 质量过滤：网络爬取的数据中有很大一部分不适合语言模型训练（例如，格式不正确的文本、自动生成的网站文本）。这些通常通过“质量”过滤方法来移除，这里选择使用简单的启发式方法和正则表达式来过滤段落。这些过滤器的效果是去除从HTML转换为纯文本时产生的错误。
 * 去重：最近的研究表明，数据去重可以使语言模型更有效地训练。遵循这一原则，我选择在每个来源中去重数据。
-* 多样化的来源：像GPT-Neo或Pythia这样的模型（两者都在The Pile上训练）已经显示了在多样化的文档集上训练的重要性，如技术文档或生物医学文章。这里我加入了更多的网络SFT数据，如InstructionWild
+* 多样化的来源：我加入了更多的网络SFT数据，如InstructionWild
 
 ## 数据发布
 
