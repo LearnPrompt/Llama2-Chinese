@@ -22,16 +22,15 @@
 
 本仓库中提供了基于QLoRA的微调代码
 
-我们的训练代码基于[FastChat](https://github.com/lm-sys/FastChat)开发.您可以使用以下命令用两张A100（80G）训练ToolLLaMA-7b, 训练数据是我们已经处理好的[数据]
+我们的训练代码基于[FastChat](https://github.com/lm-sys/FastChat)开发.您可以使用以下命令用两张A100（80G）训练, 训练数据是我们已经处理好的[数据]
 ```bash
 export PYTHONPATH=./
 deepspeed --master_port=20001 toolbench/train/train_long_seq_lora.py \
     --model_name_or_path huggyllama/llama-7b  \
-    --data_path  data/toolllama_G123_dfs_train.json \
-    --eval_data_path  data/toolllama_G123_dfs_eval.json \
-    --conv_template tool-llama-single-round \
+    --data_path  data/instruction/dummy_data.jsonl \
+    --conv_template llama-single-round \
     --bf16 True \
-    --output_dir toolllama_lora \
+    --output_dir lora \
     --num_train_epochs 5 \
     --per_device_train_batch_size 4 \
     --per_device_eval_batch_size 2 \
@@ -48,7 +47,7 @@ deepspeed --master_port=20001 toolbench/train/train_long_seq_lora.py \
     --model_max_length 8192 \
     --gradient_checkpointing True \
     --lazy_preprocess True \    
-    --deepspeed ds_configs/stage2.json \
+    --deepspeed stage2.json \
     --report_to none
 ```
 
